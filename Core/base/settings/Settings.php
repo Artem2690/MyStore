@@ -37,6 +37,11 @@ class Settings
           'outputMethod'=> 'OutputData' //Метод по умолчанию вывода данних
       ]
     ];
+    private $teplateArr = [
+        'text'=>['name','phone','adress'],
+        'textarea'=>['content','keywords']
+    ];
+
     //Защищаем от создания через new
     private function __construct(){
     }
@@ -46,7 +51,7 @@ class Settings
     }
     //Метод для возвращения свойств routes
     static public function get($property){
-        return self::$_instance->$property;
+        return self::instance()->$property;
 
     }
 
@@ -54,6 +59,9 @@ class Settings
         if(self::$_instance instanceof self){
             return self::$_instance;
         } return self::$_instance = new self;
+    }
+    public function clueProperties($class){
+
     }
 
 
