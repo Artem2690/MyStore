@@ -7,10 +7,6 @@ use core\base\settings\Settings;
 class RoutController
 {
     static private $_instance;
-    //Защищаем от создания через new
-    private function  __construct(){
-
-    }
     //Защищаем от создания через клонировани
     private function __clone(){
 
@@ -21,6 +17,12 @@ class RoutController
             return self::$_instance;// Если $_instance не равен 'null', то возвращаем существующий объект
         }
         return self::$_instance = new self; // Иначе  создаем объект new self()
+    }
+
+    //Защищаем от создания через new
+    private function  __construct(){
+        $s = Settings::get('routes');
+        exit();
     }
 
 }
