@@ -37,9 +37,13 @@ class Settings
           'outputMethod'=> 'OutputData' //Метод по умолчанию вывода данних
       ]
     ];
+    //стандартный шаблон для полей
     private $teplateArr = [
         'text'=>['name','phone','adress'],
         'textarea'=>['content','keywords']
+    ];
+    private $lalla = [
+        'text'=>['name','phone','adress']
     ];
 
     //Защищаем от создания через new
@@ -60,8 +64,42 @@ class Settings
             return self::$_instance;
         } return self::$_instance = new self;
     }
+    //Метод который будет склеивать свойства указанного класса
     public function clueProperties($class){
+        $baseProperties = [];
+        //Проходем в цикле по объекту класса Settings ($this)  как (as) имя свойства ($name) и значение свойства ($item)
+        //В переменную $property мы будем сохранять свойства класса которого мы передали в метод clueProperties в качестве параметра
+        //через метод get ,,,
 
+        foreach ($this as $name =>$item){
+            $property = $class::get($name);
+            if (is_array($property) && is_array($item)){
+                $baseProperties[$name] = $this->arreyMargeRecursive($this->$name,$property);
+                continue;
+            }
+            if (!$property) $baseProperties[$name]= $this->$name;
+        }
+       return $baseProperties;
+    }
+    //Метод склейки массива подходящий нам
+    public function arreyMargeRecursive(){
+        $arrays = func_get_args();
+        $base = array_shift($arrays);
+
+        foreach ($arrays as $array){
+            foreach ($array as $key=>$value){
+                if (is_array($value) && is_array($base[$key])){
+                    $base[$key] = $this->arreyMargeRecursive($base[$key],$value);
+                }else{
+                    if (is_int($key)){
+                        if (!in_array($value,$base))array_push($base, $value);
+                        continue;
+                    }
+                    $base[$key] = $value;
+                }
+            }
+        }
+        return $base;
     }
 
 

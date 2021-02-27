@@ -3,6 +3,7 @@
 
 namespace Core\base\controllers;
 use core\base\settings\Settings;
+use core\base\settings\ShopSettings;
 
 class RoutController
 {
@@ -10,6 +11,12 @@ class RoutController
     //Защищаем от создания через клонировани
     private function __clone(){
 
+    }
+    //Защищаем от создания через new
+    private function  __construct(){
+        $s = Settings::instance();
+        $s1 = ShopSettings::instance();
+        exit();
     }
     //создание объект класса или возваращения сылки на объект класса
     static public function getInstance(){
@@ -19,10 +26,6 @@ class RoutController
         return self::$_instance = new self; // Иначе  создаем объект new self()
     }
 
-    //Защищаем от создания через new
-    private function  __construct(){
-        $s = Settings::get('routes');
-        exit();
-    }
+
 
 }
